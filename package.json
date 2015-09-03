@@ -15,7 +15,9 @@
     "url":                "https://github.com/fvdm/nodejs-tk102/issues"
   },
   "main":                 "tk102.js",
-  "dependencies":         {},
+  "dependencies": {
+    "iconv-lite":         "^0.4.11"
+  },
   "devDependencies":      {},
   "optionalDependencies": {},
   "engines": {
