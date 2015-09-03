@@ -16,7 +16,7 @@
   },
   "main":                 "tk102.js",
   "dependencies": {
-    "iconv-lite":         "^0.4.11"
+    "iconv-lite":         "0.4.x"
   },
   "devDependencies":      {},
   "optionalDependencies": {},
