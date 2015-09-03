@@ -107,6 +107,7 @@ tk102.createServer = function (vars) {
 
   // inbound connection
   tk102.server.on ('connection', function (socket) {
+    socket.setEncoding ('binary');
     tk102.emit ('connection', socket);
     var data = [];
     var size = 0;
