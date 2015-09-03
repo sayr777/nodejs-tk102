@@ -10,6 +10,7 @@ License:      Unlicense / Public Domain (see UNLICENSE file)
 
 var net = require ('net');
 var EventEmitter = require ('events') .EventEmitter;
+var iconv = require ('iconv-lite');
 var tk102 = new EventEmitter ();
 
 // defaults
@@ -17,7 +18,8 @@ tk102.settings = {
   ip: '0.0.0.0',
   port: 0, // 0 = random, see `listening` event
   connections: 10,
-  timeout: 10
+  timeout: 10,
+  encoding: 'utf8'
 };
 
 
@@ -107,7 +109,9 @@ tk102.createServer = function (vars) {
 
   // inbound connection
   tk102.server.on ('connection', function (socket) {
-    socket.setEncoding ('binary');
+    if (tk102.settings.encoding !== 'utf8') {
+      socket.setEncoding ('binary');
+    }
     tk102.emit ('connection', socket);
     var data = [];
     var size = 0;
@@ -119,7 +123,12 @@ tk102.createServer = function (vars) {
     });
 
     socket.on( 'close', function() {
-      data = Buffer.concat (data, size).toString ('utf8');
+      data = Buffer.concat (data, size);
+      if (tk102.settings.encoding !== 'utf8') {
+        data = iconv.decode (data, tk102.settings.encoding);
+      } else {
+        data = toString ('utf8');
+      }
       var gps = {};
       if (data != '') {
         var gps = tk102.parse (data);
